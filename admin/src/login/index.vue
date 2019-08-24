@@ -26,6 +26,7 @@
           clearable
         ></el-input>
       </el-form-item>
+      <router-link to="/register" class="register">注册</router-link>
       <el-button id="submit" type="primary" round @click="onSubmit('form')">登录</el-button>
     </el-form>
   </el-container>
@@ -108,6 +109,10 @@ export default {
   border-style: solid;
   border-width: 2px;
   box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
+}
+.register{
+  float:right;
+  color: #42b983;
 }
 #submit {
   margin: 0 15%;

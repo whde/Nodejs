@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import Login from "../login/index.vue";
+import Register from "../login/register.vue";
 import Main from "../main/index.vue";
 import error from "../error.vue";
 
@@ -11,6 +12,7 @@ const router = new VueRouter({
   routes: [
     { path: "/", redirect: { name: "login" } },
     { path: "/login", name: "login", component: Login },
+    { path: "/register", name: "register", component: Register },
     { path: "/main", name: "main", component: Main },
     {
       path: "*",
