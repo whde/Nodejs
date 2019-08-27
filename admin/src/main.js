@@ -6,19 +6,21 @@ import router from './router'
 import './plugins/element.js'
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // axios
-import http from "./plugins/https";   
-Vue.prototype.$http = http; 
+import http from "./plugins/https";
+Vue.prototype.$http = http;
 
-import userStorage from "./storage/UserStorage";   
-Vue.prototype.$userStorage = userStorage; 
+import userStorage from "./storage/UserStorage";
+Vue.prototype.$userStorage = userStorage;
 
+// import store from "./store/store";
+// Vue.prototype.$store = store;
 
 new Vue({
   router,
   route: h => h(App),
-}).$mount('#app')
+}).$mount('#app');
 
 

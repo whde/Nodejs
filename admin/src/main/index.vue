@@ -1,49 +1,88 @@
 <template>
-<el-container style="height: 500px; margin:0; pandding:0;">
+<el-container style="height: 100%; margin:0; pandding:0;">
   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-    <el-menu :default-openeds="['1', '3']">
+    <el-menu router :default-openeds="['1']" unique-opened :default-active="this.$router.history.current.path">
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-message"></i>人员管理</template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">新增人员</el-menu-item>
-          <el-menu-item index="1-2">人员列表</el-menu-item>
+          <el-menu-item index="/main/memberList">人员列表</el-menu-item>
+          <el-menu-item index="/main/memberEdit">新增人员</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
   </el-aside>
-  
+
   <el-container>
-    <el-header style="text-align: right; font-size: 12px">
-      <el-dropdown>
-        <i class="el-icon-setting" style="margin-right: 15px"></i>
+    <el-header height="40px" style="text-align: right; font-size: 12px; alignment-baseline: center">
+      <el-dropdown @command="handleCommand">
+        <div style="display: flex;flex-direction: row;align-items: center">
+          <span>{{this.name}}&nbsp</span>
+          <el-avatar class="avatar" size="small" :src=this.image @error="errorHandler">
+            <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt=""/>
+          </el-avatar>
+        </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item command="info">个人信息</el-dropdown-item>
+          <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <span>王小虎</span>
     </el-header>
-    
     <el-main>
-      <el-table :data="tableData">
-        <el-table-column prop="date" label="日期" width="140">
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120">
-        </el-table-column>
-        <el-table-column prop="address" label="地址">
-        </el-table-column>
-      </el-table>
+      <router-view :key="this.$router.history.current.path">
+      </router-view>
     </el-main>
   </el-container>
 </el-container>
 </template>
 
 <script>
+
 export default {
-    
+  data(){
+    return {
+      name:'',
+      image:'',
+    }
+  },
+  mounted(){
+    let info = this.$userStorage.fetch();
+    if (info.name) this.name=info.name;
+    else this.name=info.userName;
+    this.image=this.$userStorage.fetchImg();
+    let path = this.$router.history.current.path;
+    if (path==="/main/"||path==='/main'){
+      this.$router.push({name:'memberList'});
+    }
+  },
+  methods:{
+    handleCommand(command){
+      if (command==='logout'){
+        this.logout();
+      } else if (command==='info'){
+        this.$router.push({name:"info"});
+      }
+    },
+    logout(){
+      this.$userStorage.removeAll();
+      this.$router.replace({name:"login"});
+    },
+    errorHandler(){
+      return true;
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+  .el-header {
+    background-color: #BBFFFF;
+    color: #ffffff;
+    line-height: 40px;
+  }
+  .el-aside {
+    color: #333;
+  }
+  .avatar{
+    /*margin-top: 5px;*/
+  }
 </style>

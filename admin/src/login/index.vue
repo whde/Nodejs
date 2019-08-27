@@ -1,12 +1,13 @@
 
 <template>
-  <el-container id="bg" style="margin:0; pandding:0;">
+  <el-container id="bg" style="margin:0; padding:0;">
     <el-form :model="form" ref="form" :rules="rules" label-width="80px" id="form">
-      <img
-        src="https://github.com/whde/Alert/blob/master/AlertDemo/AlertDemo/Assets.xcassets/AppIcon.appiconset/Icon-60.0@3x.png?raw=true"
-        alt
-        class="header"
-      />
+      <div class="header">
+        <el-avatar :size="100" :src=this.image @error="errorHandler">
+          <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt=""/>
+        </el-avatar>
+      </div>
+
       <el-form-item label="用户名" prop="userName">
         <el-input
           v-model="form.userName"
@@ -15,6 +16,8 @@
           maxlength="16"
           show-word-limit
           clearable
+          autofocus=true
+          @blur="blur"
         ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
@@ -36,6 +39,7 @@
 export default {
   data() {
     return {
+      image:"",
       form: {
         userName: "Whde1234",
         password: "Whde123456"
@@ -52,7 +56,21 @@ export default {
       }
     };
   },
+  mounted(){
+    this.image = this.$userStorage.fetchImg();
+  },
   methods: {
+    blur() {
+      const _this = this;
+      let body = {
+        userName:_this.form.userName,
+      };
+      _this.$http.get('/admin/api/login/image', {params:body}).then(res=>{
+        if (res.data.code===0){
+          _this.image=res.data.data;
+        }
+      });
+    },
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -66,18 +84,23 @@ export default {
       let _this = this;
       _this.$http.post("/admin/api/login", _this.form).then(res => {
         console.log(res);
-        if (res.data.code == 0) {
+        if (res.data.code === 0) {
           _this.$message({
             message: res.data.msg,
             type: "success"
           });
           _this.$userStorage.store(res.data.data);
+          _this.$userStorage.storeToken(res.data.data.token);
+          _this.$userStorage.storeImg(res.data.data.image);
           _this.$router.push({name:"main"});
         } else {
           _this.$message.error(res.data.msg);
         }
       });
-    }
+    },
+    errorHandler() {
+      return true
+    },
   }
 };
 </script>
@@ -94,7 +117,7 @@ export default {
   width: 400px;
   background-color: #fff;
   margin: auto;
-  padding: 20px 20px 20px 0px;
+  padding: 20px 20px 20px 0;
   border-radius: 8px;
 }
 .header {
