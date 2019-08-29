@@ -3,10 +3,39 @@
   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
     <el-menu router :default-openeds="['1']" unique-opened :default-active="this.$router.history.current.path">
       <el-submenu index="1">
-        <template slot="title"><i class="el-icon-message"></i>人员管理</template>
+        <template slot="title"><i class="el-icon-message"></i>用户管理</template>
         <el-menu-item-group>
-          <el-menu-item index="/main/memberList">人员列表</el-menu-item>
-          <el-menu-item index="/main/memberEdit">新增人员</el-menu-item>
+          <el-menu-item index="/main/memberList">用户列表</el-menu-item>
+          <el-menu-item index="/main/memberEdit">新增/编辑</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="2">
+        <template slot="title"><i class="el-icon-message"></i>笑话管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="/joke/list">笑话列表</el-menu-item>
+          <el-menu-item index="/joke/create">新增笑话</el-menu-item>
+          <el-menu-item index="/joke/spider">抓取笑话</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title"><i class="el-icon-message"></i>古诗文管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="/poet/author">作者列表</el-menu-item>
+          <el-menu-item index="/poet/list">诗文列表</el-menu-item>
+          <el-menu-item index="/poet/spider">抓取古诗文</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="4">
+        <template slot="title"><i class="el-icon-message"></i>电影管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="/movie/category">电影分类</el-menu-item>
+          <el-menu-item index="/movie/spider">抓取电影</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="5">
+        <template slot="title"><i class="el-icon-message"></i>留言管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="/main/memberList">留言列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

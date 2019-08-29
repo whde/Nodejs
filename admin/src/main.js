@@ -15,8 +15,8 @@ Vue.prototype.$http = http;
 import userStorage from "./storage/UserStorage";
 Vue.prototype.$userStorage = userStorage;
 
-// import store from "./store/store";
-// Vue.prototype.$store = store;
+import time from "./plugins/time";
+Vue.prototype.$time = time;
 
 new Vue({
   router,

@@ -13,7 +13,6 @@ module.exports = app => {
 
   app.get('/admin/api/login/image', function (req, res) {
     AdminUsers.findOne(req.query, function(err, user) {
-      console.log(user);
       if (!user || !user.image) {
         let resData = {
           code: 1,

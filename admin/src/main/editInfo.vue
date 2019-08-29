@@ -10,7 +10,7 @@
                 :on-error="handleAvatarError"
                 :headers=this.headers
                 :before-upload="beforeAvatarUpload">
-            <el-avatar :size="100" :src=info.image @error="errorHandler">
+            <el-avatar :size="100" v-bind:src=info.image @error="errorHandler">
                 <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt=""/>
             </el-avatar>
         </el-upload>

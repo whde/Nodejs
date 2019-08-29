@@ -7,6 +7,7 @@ app.use(require('cors')());
 require('./plugins/db')(app);
 require('./plugins/token');
 require('./routes/admin/user/')(app);
+require('./routes/admin/user')(app);
 require('./routes/')(app);
 
 // app.get('/', (req, res) => res.send('Hello World!'))
