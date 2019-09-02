@@ -1,7 +1,7 @@
 <template>
-<el-container style="height: 100%; margin:0; pandding:0;">
+<el-container style="height: 100%; margin:0; padding:0;">
   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-    <el-menu router :default-openeds="['1']" unique-opened :default-active="this.$router.history.current.path">
+    <el-menu router unique-opened :default-active="this.$router.history.current.path">
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-message"></i>用户管理</template>
         <el-menu-item-group>
@@ -35,7 +35,7 @@
       <el-submenu index="5">
         <template slot="title"><i class="el-icon-message"></i>留言管理</template>
         <el-menu-item-group>
-          <el-menu-item index="/main/memberList">留言列表</el-menu-item>
+          <el-menu-item index="/message/index">留言列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

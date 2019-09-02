@@ -4,22 +4,23 @@ import os
 import sys
 import importlib
 from bs4 import BeautifulSoup
-from urllib.parse import quote
 from flask import json
 import urllib3
 import string
+from urllib.parse import quote
 
 root_folder = 'JOKE/'
 root_url = 'http://www.jokeji.cn/hot.asp?action=brow'
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+}
+
 
 # 获取排行榜URL页下面的笑话list数据
 def getmeichannel(url):
     url = quote(url, safe=string.printable)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
-    }
     http = urllib3.PoolManager()
-    web_data = http.request('GET', url, headers=headers).data
+    web_data = http.request('GET', url, headers=headers, retries=100).data
     soup = BeautifulSoup(web_data, 'html.parser', from_encoding='GBK')
     channel = []
     tables = soup.findAll(height='30')
@@ -38,20 +39,20 @@ def getmeichannel(url):
 def getpages(url):
     print(url)
     url = quote(url, safe=string.printable)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
-    }
     http = urllib3.PoolManager()
-    web_data = http.request('GET', url, headers=headers).data
-    # web_data = requests.get(url, headers=headers)
-    # web_data.encoding = 'gb2312'
+    web_data = http.request('GET', url, headers=headers, retries=100).data
     soup = BeautifulSoup(web_data, 'html.parser', from_encoding='GBK')
-    print(web_data)
     # 找总页数
     span = soup.find(class_='main_title')
-    tds = span.findAll('td')
-    td = tds[len(tds)-2]
-    pages = td.select('a')[0].get('href').replace('hot.asp?action=brow&me_page=', '')
+    pages = 0
+    try:
+        tds = span.findAll('td')
+        td = tds[len(tds)-2]
+        pages = td.select('a')[0].get('href').replace('hot.asp?action=brow&me_page=', '')
+        pass
+    except Exception as e:
+        print(str(e))
+        pass
     print(pages)
     return pages
 
@@ -59,11 +60,8 @@ def getpages(url):
 # 爬取详情页数据
 def detail(url):
     url = quote(url, safe=string.printable)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
-    }
     http = urllib3.PoolManager()
-    r = http.request('GET', url, headers=headers)
+    r = http.request('GET', url, headers=headers, retries=100)
     web_data = r.data
     soup = BeautifulSoup(web_data, 'html.parser', from_encoding='GBK')
     # 查找详情页数据
@@ -139,3 +137,4 @@ if __name__ == "__main__":
     # 开始爬取数据
     spider(root_url)
     print('**** spider ****')
+
